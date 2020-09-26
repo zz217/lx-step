@@ -1,5 +1,5 @@
 # lx-step
-【Python】腾讯云云函数配合乐心健康刷QQ、微信、支付宝步数
+【Python】腾讯云云函数配合乐心健康刷QQ、微信、支付宝步数(支持随机步数)
 
 # 方法
 1. 下载乐心健康APP：官方下载地址：http://www.lifesense.com/app/
@@ -9,3 +9,6 @@
 5. 回到云函数代码，配置好下图参数，运行即可提交步数即可同步至你绑定的所有平台
 ![1](https://attach.52pojie.cn/forum/202009/26/220610s1ehd59u55uh5uce.png)
 6. 设置好云函数触发规则
+
+# 其他
+[https://www.52pojie.cn/thread-1274977-1-1.html](https://www.52pojie.cn/thread-1274977-1-1.html)
