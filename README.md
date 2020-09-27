@@ -1,5 +1,5 @@
 # lx-step
-【Python】腾讯云云函数配合乐心健康刷QQ、微信、支付宝步数(支持随机步数)
+【Python】腾讯云云函数配合乐心健康刷QQ、微信、支付宝步数(支持随机步数、微信QQ推送)
 
 # 方法
 1. 下载乐心健康APP：官方下载地址：http://www.lifesense.com/app/
