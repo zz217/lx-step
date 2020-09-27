@@ -35,8 +35,8 @@ def update_step(step,information):
     #print(userId)
     #获取当前时间和日期
     timeStamp=time.time()
-    localTime = time.localtime(timeStamp) 
-    strTime = time.strftime("%Y-%m-%d %H:%M:%S", localTime) 
+    localTime = time.localtime(timeStamp)
+    strTime = time.strftime("%Y-%m-%d %H:%M:%S", localTime)
     print(strTime)
     measureTime=strTime+","+str(int(timeStamp))
 
@@ -66,11 +66,39 @@ def update_step(step,information):
                 }
     result=requests.post(url,headers=header,data=json.dumps(sport_datas))
     return result.text
+
+def server_send(msg):
+    if sckey == '':
+        return
+    server_url = "https://sc.ftqq.com/" + str(sckey) + ".send"
+    data = {
+            'text': msg,
+            'desp': msg
+        }
+    requests.post(server_url, data=data)
+
+def kt_send(msg):
+    if ktkey == '':
+        return
+    kt_url = 'https://push.xuthus.cc/send/'+str(ktkey)
+    data = ('步数刷取完成，请查看详细信息~\n'+str(msg)).encode("utf-8")
+    requests.post(kt_url, data=data)
+
 def execute_walk(phone,password,step):
     information=get_information(phone,password)
     update_result=update_step(step,information)
     result=json.loads(update_result)["msg"]
-    print("刷新步数成功！此次刷取"+str(step)+"步。")if result=="成功" else print("刷新步数失败！")    
+    if result == '成功':
+        msg = "刷新步数成功！此次刷取" + str(step) + "步。"
+        print(msg)
+        server_send(msg)
+        kt_send(msg)
+    else:
+        msg = "刷新步数失败！请查看云函数日志。"
+        print(msg)
+        server_send(msg)
+        kt_send(msg)
+    
 
 def main():
     if phone and password and step != '':
@@ -78,11 +106,13 @@ def main():
     else:
         print("参数不全,请指定参数。或者在调用中直接指定参数")
 
-# -- 配置--
+# -- 配置 --
 # ------------------------------
-phone = '' # 登陆账号
-password = '' # 密码
-step = random.randint(30000,40000)# 随机30000-40000步数
+phone = ''  # 登陆账号
+password = ''  # 密码
+step = random.randint(30000,40000)  # 随机30000-40000步数
+sckey = ''  # server酱key(可空)
+ktkey = ''  # 酷推key(可空)
 # ------------------------------
 
 def main_handler(event, context):
