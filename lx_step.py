@@ -15,7 +15,7 @@ def get_information(mobile,password):
         'Content-Type': 'application/json; charset=utf-8',
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
     }
-    url="http://sports.lifesense.com/sessions_service/login?systemType=2&version=4.6.7"
+    url="https://sports.lifesense.com/sessions_service/login?version=4.5&systemType=2"
     datas = {
         "appType":6,
         "clientId":md5("5454"),
@@ -23,14 +23,15 @@ def get_information(mobile,password):
         "password":md5(str(password)),
         "roleType":0
         }
-    response =requests.post(url,headers=header,data=json.dumps(datas))
+    response =requests.post(url,headers=header,data=json.dumps(datas),verify=False)
     return response.text
 
 def update_step(step,information):
     step =int(step)
-    url="http://sports.lifesense.com/sport_service/sport/sport/uploadMobileStepV2?version=4.5&systemType=2"
+    url="https://sports.lifesense.com/sport_service/sport/sport/uploadMobileStepV2?version=4.5&systemType=2"
     accessToken=json.loads(information)["data"]["accessToken"]
     userId=json.loads(information)["data"]["userId"]
+    #print(json.loads(information))
     #print(accessToken)
     #print(userId)
     #获取当前时间和日期
@@ -48,23 +49,24 @@ def update_step(step,information):
     sport_datas = {
         "list": [
             {
-                "DataSource":2,
-                "active":1,
-                "calories":str(int(step/4)),
-                "dataSource":2,
-                "deviceId":"M_NULL",
-                "distance":str(int(step/3)),
-                "exerciseTime":0,
-                "isUpload":0,
-                "measurementTime":measureTime,
-                "priority":0,
-                "step": str(step),
-                "type":2,
-                "updated":str(int(time.time()*1000)),
-                "userId":str(userId)
+                 "DataSource":2,
+                #"active":0,
+                 "calories":str(int(step/4)),
+                #"dataSource":4,
+                 "deviceId":"M_NULL",
+                 "distance":str(int(step/3)),
+                 "exerciseTime":0,
+                 "isUpload":0,
+                 "measurementTime":measureTime,
+                #"priority":0,
+                 "step": str(step),
+                 "type":2,
+                 "updated":str(int(time.time()*1000)),
+                 "userId":str(userId)
                 }]
                 }
-    result=requests.post(url,headers=header,data=json.dumps(sport_datas))
+    result=requests.post(url,headers=header,data=json.dumps(sport_datas), verify=False)
+    # print(result.text)
     return result.text
 
 def server_send(msg):
