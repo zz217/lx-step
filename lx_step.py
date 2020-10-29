@@ -5,6 +5,7 @@ import json
 import time
 import random
 
+requests.packages.urllib3.disable_warnings
 def md5(code):
     res=hashlib.md5()
     res.update(code.encode("utf8"))
@@ -18,7 +19,7 @@ def get_information(mobile,password):
     url="https://sports.lifesense.com/sessions_service/login?version=4.5&systemType=2"
     datas = {
         "appType":6,
-        "clientId":md5("5454"),
+        "clientId":'8e844e28db7245eb81823132464835eb',
         "loginName":str(mobile),
         "password":md5(str(password)),
         "roleType":0
