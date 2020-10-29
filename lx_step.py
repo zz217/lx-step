@@ -24,7 +24,7 @@ def get_information(mobile,password):
         "password":md5(str(password)),
         "roleType":0
         }
-    response =requests.post(url,headers=header,data=json.dumps(datas),verify=False)
+    response =requests.post(url,headers=header,data=json.dumps(datas))
     return response.text
 
 def update_step(step,information):
@@ -66,7 +66,7 @@ def update_step(step,information):
                  "userId":str(userId)
                 }]
                 }
-    result=requests.post(url,headers=header,data=json.dumps(sport_datas), verify=False)
+    result=requests.post(url,headers=header,data=json.dumps(sport_datas))
     # print(result.text)
     return result.text
 
