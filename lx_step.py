@@ -85,7 +85,7 @@ def bind(information):
     result = requests.post(url,headers=header,data=json.dumps(datas))
     if result.status_code == '401':
         print('重新登录')
-        bind()
+        main()
     else:
         msg = result.json()
         if msg.get('msg') == '成功':
