@@ -2,12 +2,11 @@
 【Python】腾讯云云函数配合乐心健康刷QQ、微信、支付宝步数(支持随机步数、微信QQ推送)
 
 # 说在前面
-乐心健康规定要绑定手环等智能设备才可以将数据推送到第三方，此次更新只解决了接口问题，实测可以完成刷步，但是由于本人身边没有手环这种智能设备，数据同步第三方应用是否可行未进行测试，理论上是乐心新规定的问题。
+已经解决步数数据不同步第三方应用问题，感谢吾爱破解[xwj1612](https://www.52pojie.cn/?1113315),感谢项目[https://github.com/BBboy01/ChangeStype](https://github.com/BBboy01/ChangeStype)
 
-下面是测试截图：
-![QQ截图20201029224207.png](https://i.loli.net/2020/10/29/iB8QvXl4HnudS7J.png)
-![Screenshot_20201029_223528_gz.lifesense.weidong.jpg](https://i.loli.net/2020/10/29/dcm2KpuNXMjFDSB.jpg)
-![Screenshot_20201029_222324_gz.lifesense.weidong.jpg](https://i.loli.net/2020/10/29/N7fgmeXyYO5WkRI.jpg)
+# 测试截图
+![QQ截图20201030125740.png](https://i.loli.net/2020/10/30/HyoYs8MNnu9gQjI.png)
+![Screenshot_20201030_125105_com.eg.android.AlipayG.jpg](https://i.loli.net/2020/10/30/ODLjcw3FEpy6ZvK.jpg)
 
 # 方法
 1. 下载乐心健康APP：官方下载地址：http://www.lifesense.com/app/
