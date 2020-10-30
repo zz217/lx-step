@@ -4,7 +4,6 @@ import hashlib
 import json
 import time
 import random
-
 requests.packages.urllib3.disable_warnings
 def md5(code):
     res=hashlib.md5()
@@ -14,7 +13,7 @@ def md5(code):
 def get_information(mobile,password):
     header = {
         'Content-Type': 'application/json; charset=utf-8',
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
+        "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 9; SM-G9500 Build/PPR1.180610.011)"
     }
     url="https://sports.lifesense.com/sessions_service/login?version=4.5&systemType=2"
     datas = {
@@ -45,7 +44,7 @@ def update_step(step,information):
     header = {
     'Cookie': 'accessToken='+accessToken,
     'Content-Type': 'application/json; charset=utf-8',
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"
+    "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 9; SM-G9500 Build/PPR1.180610.011)"
     }
     sport_datas = {
         "list": [
@@ -70,6 +69,30 @@ def update_step(step,information):
     # print(result.text)
     return result.text
 
+def bind(information):
+    accessToken = json.loads(information)["data"]["accessToken"]
+    userId = json.loads(information)["data"]["userId"]
+    header = {
+        'Cookie': 'accessToken=' + accessToken,
+        'Content-Type': 'application/json; charset=utf-8',
+        "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 9; SM-G9500 Build/PPR1.180610.011)"
+    }
+    datas = {
+        "qrcode": 'http://we.qq.com/d/AQC7PnaOXQhy3VvzFeP5bZMKmAQrGE6NJWdK3Xnk',  # 这东西不知道能用多久
+        "userId": userId,
+    }
+    url = 'https://sports.lifesense.com/device_service/device_user/bind'
+    result = requests.post(url,headers=header,data=json.dumps(datas))
+    if result.status_code == '401':
+        print('重新登录')
+        bind()
+    else:
+        msg = result.json()
+        if msg.get('msg') == '成功':
+            print('绑定成功，即将开刷')
+        else:
+            print('绑定失败')
+
 def server_send(msg):
     if sckey == '':
         return
@@ -89,6 +112,7 @@ def kt_send(msg):
 
 def execute_walk(phone,password,step):
     information=get_information(phone,password)
+    bind(information)
     update_result=update_step(step,information)
     result=json.loads(update_result)["msg"]
     if result == '成功':
@@ -101,7 +125,7 @@ def execute_walk(phone,password,step):
         print(msg)
         server_send(msg)
         kt_send(msg)
-    
+
 
 def main():
     if phone and password and step != '':
@@ -113,7 +137,7 @@ def main():
 # ------------------------------
 phone = ''  # 登陆账号
 password = ''  # 密码
-step = random.randint(30000,40000)  # 随机30000-40000步数
+step = random.randint(8000,10000)  # 随机8000-10000步数
 sckey = ''  # server酱key(可空)
 ktkey = ''  # 酷推key(可空)
 # ------------------------------
@@ -123,3 +147,4 @@ def main_handler(event, context):
 
 if __name__ == '__main__':
     main()
+
