@@ -70,6 +70,9 @@ def update_step(step,information):
     return result.text
 
 def bind(information):
+    # 设备qrcode列表
+    qrcodelist = ['http://we.qq.com/d/AQC7PnaOelOaCg9Ux8c9Ew95yumTVfMcFuGCHMY-', 'http://we.qq.com/d/AQC7PnaOysMBFUhD6sByjYwH2MT12Jf2rqr2kFKm', 'http://we.qq.com/d/AQC7PnaOEcpmVUpHtrZBmRUVq4wOOgKw-gfh6wPj', 'http://we.qq.com/d/AQC7PnaOuG5SHierDiEH2AdZLzMt3W__GL8E1MJj', 'http://we.qq.com/d/AQC7PnaOC0S07XFU-c_R1cpxY1mtf8oiXiDrXET7', 'http://we.qq.com/d/AQC7PnaOoraxuZEdkFyVSO6gaTvMjzEzhEfLRXbE', 'http://we.qq.com/d/AQC7PnaOhQxO8K2EuU44QBZ8cRzB2ofP-oFJSU_6', 'http://we.qq.com/d/AQC7PnaOmwgxedHWCLVr-ZyeoLxHtRrHBGDuyH9E', 'ttp://we.qq.com/d/AQC7PnaO4am4196RIo98NYn_vPfHN-Y5j-w9FmSN', 'http://we.qq.com/d/AQC7PnaO2WczbXNLV7PzC7V60i7-iOgLha5Bg4cV', 'http://we.qq.com/d/AQC7PnaOZAUJTMxJ6-gbdrWV6y-jHHofCYFl-Jv0']
+
     accessToken = json.loads(information)["data"]["accessToken"]
     userId = json.loads(information)["data"]["userId"]
     header = {
@@ -77,22 +80,26 @@ def bind(information):
         'Content-Type': 'application/json; charset=utf-8',
         "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 9; SM-G9500 Build/PPR1.180610.011)"
     }
-    datas = {
-        "qrcode": 'http://we.qq.com/d/AQC7PnaOXQhy3VvzFeP5bZMKmAQrGE6NJWdK3Xnk',  # 这东西不知道能用多久
-        "userId": userId,
-    }
-    url = 'https://sports.lifesense.com/device_service/device_user/bind'
-    result = requests.post(url,headers=header,data=json.dumps(datas))
-    if result.status_code == '401':
-        print('重新登录')
-        main()
-    else:
-        msg = result.json()
-        if msg.get('msg') == '成功':
-            print('绑定成功，即将开刷')
+    for i in qrcodelist:
+        datas = {
+            "qrcode": i,  
+            "userId": userId,
+        }
+        url = 'https://sports.lifesense.com/device_service/device_user/bind'
+        result = requests.post(url,headers=header,data=json.dumps(datas))
+        if result.status_code == '401':
+            print('重新登录')
+            main()
         else:
-            print('绑定失败')
-
+            msg = result.json()
+            print(msg)
+            if msg.get('msg') == '成功':
+                print('绑定成功，即将开刷')
+                break
+            else:
+                print('此设备绑定失败,尝试下一个。')
+    print('所有设备均无法绑定，请自己寻找可用的qrcode，将连接加入列表qr中进行尝试。')
+    
 def server_send(msg):
     if sckey == '':
         return
